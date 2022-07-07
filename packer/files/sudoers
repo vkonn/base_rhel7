@@ -1,0 +1,46 @@
+##
+## Only Cloud Administrators should be changing this file
+##
+## DEFAULTS
+Defaults   !visiblepw
+Defaults    always_set_home
+Defaults    match_group_by_gid
+Defaults    env_reset
+Defaults    env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS"
+Defaults    env_keep += "MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE"
+Defaults    env_keep += "LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES"
+Defaults    env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
+Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+Defaults    lecture=always
+
+## Enable sudoreplay
+Defaults log_output
+Defaults!/usr/bin/sudoreplay !log_output
+Defaults!/sbin/reboot !log_output
+
+## Disable require tty for cloudadmin remote commands
+Defaults:cloudadmin        !requiretty
+
+root    ALL=(ALL)       ALL
+%wheel  ALL=(ALL)       ALL
+
+# Sample Security Policy where only one Authentication is required
+## Command Aliases ##
+Cmnd_Alias   RESTRICT_ROOT = !/bin/su -, !/bin/su - root, !/bin/su root
+Cmnd_Alias   RESTRICT_ADMIN = !/usr/sbin/visudo, !/bin/vi /etc/sudoers, !/bin/vim /etc/sudoers, !/usr/sbin/useradd, !/usr/sbin/userdel, !/usr/sbin/usermod, !/usr/bin/chage, !/usr/bin/sudo /bin/bash
+
+## Sample Service Accounts
+#sample_acct  ALL=(ALL)  NOPASSWD: ALL,RESTRICT_ADMIN
+#sample_acct  ALL=(ALL)   ALL,RESTRICT_ADMIN
+
+## Sample Administrative Accounts
+%infrastructure_admins  ALL=(ALL)  ALL,RESTRICT_ROOT
+%application_admins  ALL=(ALL)  ALL,RESTRICT_ADMIN
+
+## Sample Scanning Account
+#sample_scan_acct  ALL=(ALL)  ALL, !/bin/su - root, !/bin/su -
+#sample_alt_scan_acct  ALL=(ALL)  !/bin/su - root, !/bin/su -
+
+# Include sudoers.d
+#includedir /etc/sudoers.d
